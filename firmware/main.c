@@ -9,7 +9,6 @@
 #pragma config WDTE = OFF, PWRTE = OFF, CP = OFF, BOREN = OFF, MCLRE = OFF, CPD = OFF, FOSC = INTRCIO
 
 
-
 #include <xc.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,23 +45,9 @@ volatile uint8_t flags=0;
 void interrupt isr (void) {
     
     if (INTCONbits.T0IF) {
-        
-        TMR0=0xb7;
-        
 
-/*        
-        if (SEND_PORT) {
-            flags|=F_SEND;
-        } else {
-            flags&=~F_SEND;
-        }
-                
-        if (flags&F_SEND) {
-            flags|=F_LASTSEND;
-        } else {
-            flags&=~F_LASTSEND;
-        }
- */
+    	// 1750 Hz tone	    
+        TMR0=0xb7;
         
         updGPIO();
         
@@ -80,9 +65,7 @@ void interrupt isr (void) {
     
 }
 
-/*
- * 
- */
+
 int main(int argc, char** argv) {
     
   uint8_t i;
@@ -124,8 +107,9 @@ int main(int argc, char** argv) {
         
         if  (last==0 && now==1) {
         
-            beeplen=555;
-//            beeplen=65535;
+
+	    // tone duration
+  	    beeplen=555;
 
             flags|=F_BEEPON;
 
@@ -136,13 +120,8 @@ int main(int argc, char** argv) {
             
         }
         
-        
-        //for (i=0;i<100;i++) __delay_ms(25);
     };
     
-    
-    while (1);
-
     return (EXIT_SUCCESS);
 }
 
